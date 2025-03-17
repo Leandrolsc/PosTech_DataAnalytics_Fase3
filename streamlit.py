@@ -12,7 +12,7 @@ st.title("Fase 3 Pos-Tech Data Analytics")
 tab1, tab2 = st.tabs(["Apresentacao", "Consultas"])
 
 with tab1:
-    file_path = r'anexos\apresentacao\TC3_V02.pdf'
+    file_path = 'anexos/apresentacao/TC3_V02.pdf'
 
     # Abrir o PDF usando PyMuPDF
     pdf_document = fitz.open(file_path)
@@ -55,7 +55,7 @@ with tab2:
     st.header("Consultas Disponíveis")
 
     # Caminho para a pasta de consultas
-    consultas_dir = r'anexos\consultas'
+    consultas_dir = r'anexos/consultas'
 
     # Listar todos os arquivos na pasta de consultas
     if os.path.exists(consultas_dir):
