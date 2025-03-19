@@ -7,7 +7,9 @@ import os
 # Upload do arquivo PDF
 st.title("Fase 3 Pos-Tech Data Analytics")
 
-
+st.write("Este aplicativo foi desenvolvido para a disciplina de Pós-Tech Data Analytics. "
+         "Aqui você pode visualizar a apresentação da Fase 3 e consultar os scripts SQL disponíveis."
+         )
 
 tab1, tab2 = st.tabs(["Apresentacao", "Consultas"])
 
