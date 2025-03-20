@@ -11,48 +11,44 @@ st.write("Este aplicativo foi desenvolvido para a disciplina de Pós-Tech Data A
          "Aqui você pode visualizar a apresentação da Fase 3 e consultar os scripts SQL disponíveis."
          )
 
-tab1, tab2 = st.tabs(["Apresentacao", "Consultas"])
+tab1, tab2, tab3 = st.tabs(["Apresentacao", "Consultas", "Relatorio"])
 
 with tab1:
-    file_path = 'anexos/apresentacao/TC3_V02.pdf'
+    # Caminho para a pasta de imagens
+    image_dir = 'anexos/apresentacao/jpg'
 
-    # Abrir o PDF usando PyMuPDF
-    pdf_document = fitz.open(file_path)
+    # Listar e ordenar os arquivos de imagem na pasta
+    if os.path.exists(image_dir):
+        image_files = sorted([f for f in os.listdir(image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
 
-    # Converter cada página do PDF em uma imagem com maior qualidade
-    images = []
-    zoom_x = 2.0  # Fator de zoom horizontal (aumenta a resolução)
-    zoom_y = 2.0  # Fator de zoom vertical (aumenta a resolução)
-    matrix = fitz.Matrix(zoom_x, zoom_y)  # Matriz de transformação para aumentar a qualidade
+        if image_files:
+            # Carregar as imagens em uma lista
+            images = [Image.open(os.path.join(image_dir, img_file)) for img_file in image_files]
 
-    for page_num in range(len(pdf_document)):
-        page = pdf_document[page_num]
-        pix = page.get_pixmap(matrix=matrix)  # Renderizar a página com a matriz de zoom
-        img = Image.open(io.BytesIO(pix.tobytes("png")))  # Converter para formato PIL
-        images.append(img)
+            # Inicializar o estado da página
+            if "current_page" not in st.session_state:
+                st.session_state.current_page = 0
 
-    # Inicializar o estado da página
-    if "current_page" not in st.session_state:
-        st.session_state.current_page = 0
+            # Exibir a página atual
+            st.image(images[st.session_state.current_page], use_container_width=True)
 
+            # Botões de navegação
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col1:
+                if st.button("Anterior"):
+                    if st.session_state.current_page > 0:
+                        st.session_state.current_page -= 1
+            with col3:
+                if st.button("Próximo"):
+                    if st.session_state.current_page < len(images) - 1:
+                        st.session_state.current_page += 1
 
-    # Exibir a página atual
-    st.image(images[st.session_state.current_page], use_container_width=True)
-
-
-    # Botões de navegação
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col1:
-        if st.button("Anterior"):
-            if st.session_state.current_page > 0:
-                st.session_state.current_page -= 1
-    with col3:
-        if st.button("Próximo"):
-            if st.session_state.current_page < len(images) - 1:
-                st.session_state.current_page += 1
-
-    # Exibir o número da página atual
-    st.write(f"Página {st.session_state.current_page + 1} de {len(images)}")
+            # Exibir o número da página atual
+            st.write(f"Página {st.session_state.current_page + 1} de {len(images)}")
+        else:
+            st.write("Nenhuma imagem encontrada na pasta.")
+    else:
+        st.write("A pasta de imagens não existe.")
 with tab2:
     st.header("Consultas Disponíveis")
 
@@ -80,3 +76,8 @@ with tab2:
             st.write("Nenhuma consulta encontrada na pasta.")
     else:
         st.write("A pasta de consultas não existe.")
+
+
+with tab3:
+    st.header("Relatório Final")
+    
