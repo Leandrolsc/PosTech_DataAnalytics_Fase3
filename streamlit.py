@@ -29,26 +29,37 @@ with tab1:
             if "current_page" not in st.session_state:
                 st.session_state.current_page = 0
 
-            # Exibir a página atual
-            st.image(images[st.session_state.current_page], use_container_width=True)
+            def anterior():
+                if st.session_state.current_page > 0:
+                    st.session_state.current_page -= 1
+                    st.rerun() 
+
+            def proximo():
+                if st.session_state.current_page < len(images) - 1:
+                    st.session_state.current_page += 1
+                    st.rerun() 
+
+            st.image(images[st.session_state.current_page], use_container_width=True, output_format='JPEG')
+
 
             # Botões de navegação
             col1, col2, col3 = st.columns([1, 2, 1])
             with col1:
                 if st.button("Anterior"):
-                    if st.session_state.current_page > 0:
-                        st.session_state.current_page -= 1
+                    anterior()
             with col3:
                 if st.button("Próximo"):
-                    if st.session_state.current_page < len(images) - 1:
-                        st.session_state.current_page += 1
+                    proximo()
 
+            # Exibir a página atual
+            
             # Exibir o número da página atual
             st.write(f"Página {st.session_state.current_page + 1} de {len(images)}")
         else:
             st.write("Nenhuma imagem encontrada na pasta.")
     else:
         st.write("A pasta de imagens não existe.")
+
 with tab2:
     st.header("Consultas Disponíveis")
 
