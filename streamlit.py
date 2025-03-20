@@ -55,6 +55,20 @@ with tab1:
             
             # Exibir o número da página atual
             st.write(f"Página {st.session_state.current_page + 1} de {len(images)}")
+
+            pdf_file_path = 'anexos/apresentacao/TC3_V03.pdf'
+            if os.path.exists(pdf_file_path):
+                with open(pdf_file_path, "rb") as pdf_file:
+                    pdf_data = pdf_file.read()
+                st.download_button(
+                    label="📥 Baixar PDF da Apresentação",
+                    data=pdf_data,
+                    file_name="TC3_V03.pdf",
+                    mime="application/pdf"
+                )
+            else:
+                st.write("O arquivo PDF não foi encontrado.")
+
         else:
             st.write("Nenhuma imagem encontrada na pasta.")
     else:
